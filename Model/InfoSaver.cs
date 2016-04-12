@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using PixelCrushers.DialogueSystem;
 
+//New version of InfoSaver uses DialogueLua as its ONLY data manager. And thus please make sure to Save Lua Environment at all necessary moments!
 public class InfoSaver : MonoBehaviour 
 {
 	private static InfoSaver instance;
@@ -23,9 +24,9 @@ public class InfoSaver : MonoBehaviour
 
     public static void SavePlayerPosition (Vector3 playerPos)
     {
-        PlayerPrefs.SetFloat(Consts.VariableName.playerPosX, playerPos.x);
-        PlayerPrefs.SetFloat(Consts.VariableName.playerPosY, playerPos.y);
-        PlayerPrefs.SetFloat(Consts.VariableName.playerPosZ, playerPos.z);
+        DialogueLua.SetVariable(Consts.VariableName.playerPosX, playerPos.x);
+        DialogueLua.SetVariable(Consts.VariableName.playerPosY, playerPos.y);
+        DialogueLua.SetVariable(Consts.VariableName.playerPosZ, playerPos.z);
     }
 
     public static void SetBoolState (Consts.SaveType saveType, string variableName, bool state)
@@ -54,7 +55,7 @@ public class InfoSaver : MonoBehaviour
             default:
                 break;
         }
-        PlayerPrefs.SetInt(finalName, state ? 1 : 0);
+        DialogueLua.SetVariable(finalName, state ? 1 : 0);
     }
 
     public static bool GetBoolState (Consts.SaveType saveType, string variableName)
@@ -77,13 +78,16 @@ public class InfoSaver : MonoBehaviour
             case Consts.SaveType.Conclusion:
                 finalName = Consts.VariableName.conclusionState + variableName;
                 break;
-            case Consts.SaveType.Truth:
-                finalName = Consts.VariableName.truthState + variableName;
+			case Consts.SaveType.Truth:
+				finalName = Consts.VariableName.truthState + variableName;
+				break;
+			case Consts.SaveType.Content:
+				finalName = Consts.VariableName.contentReadState = variableName;
                 break;
             default:
                 break;
         }
-        return PlayerPrefs.GetInt(finalName) == 1;
+		return DialogueLua.GetVariable(finalName).AsBool;
     }
 
     public static void SaveLuaEnvironment ()
@@ -130,26 +134,37 @@ public class InfoSaver : MonoBehaviour
         int index = PlayerPrefs.GetInt(Consts.VariableName.galleryImageNum) + 1;
         PlayerPrefs.SetInt(Consts.VariableName.galleryImageNum, index);
         int head = PlayerPrefs.GetInt(Consts.VariableName.galleryImageHead) + 1;
-        PlayerPrefs.SetInt(Consts.VariableName.galleryImageHead, head);
+        DialogueLua.SetVariable(Consts.VariableName.galleryImageHead, head);
         string fileName = Application.persistentDataPath + "/Screenshot" + head + ".png";
         System.IO.File.WriteAllBytes(fileName, bytes);
     }
 
-    //Return a new Texture to display after deleting the image by its index.
+    //Return a new Texture to display after deleting the image by its index. When calling this function in PRESENTOR please alter index first.
     public static IEnumerator GalleryDeleteImageByID (UITexture targetTexture, int index)
     {
         int totalImageNum = PlayerPrefs.GetInt(Consts.VariableName.galleryImageNum);
         int oldIndex = index;
         for (int i = index; i < totalImageNum; i++)
-            PlayerPrefs.SetInt(Consts.VariableName.galleryImageIndex + i, PlayerPrefs.GetInt(Consts.VariableName.galleryImageIndex + (i + 1)));
+            DialogueLua.SetVariable(Consts.VariableName.galleryImageIndex + i, DialogueLua.GetVariable(Consts.VariableName.galleryImageIndex + (i + 1)).AsInt);
         if (oldIndex == totalImageNum)
         {
             yield return instance.StartCoroutine(GetGalleryTextureByID (targetTexture, index - 1));
             index--;
         }
-        PlayerPrefs.SetInt(Consts.VariableName.galleryImageNum, totalImageNum - 1);
+        DialogueLua.SetVariable(Consts.VariableName.galleryImageNum, totalImageNum - 1);
         string deletePath = Application.persistentDataPath + "/Screenshot" + oldIndex + ".png";
         System.IO.File.Delete(deletePath);
         yield return instance.StartCoroutine(GetGalleryTextureByID(targetTexture, index));
+    }
+
+    public static string GetStringFromResource (string fileName, int lineNum = -1)
+    {
+        string texts = Resources.Load(fileName).ToString();
+        if (lineNum == -1)
+        {
+			return texts;
+        }
+        string[] lines = texts.Split('\n');
+        return lines[lineNum];
     }
 }

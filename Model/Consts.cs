@@ -10,7 +10,9 @@ public class Consts
         Reminder,
         RealPicture,
         Conclusion,
-        Truth
+        Truth,
+		Content,
+		ContentRead
     }
 
 	public enum DisplaySetting
@@ -39,6 +41,7 @@ public class Consts
 		public const string pickUpItemState = "PickUpItemState";
 		public const string InteractableItemState = "InteractableItemState";
 		public const string realPictureState = "RealPictureState";
+		public const string contentReadState = "ContentReadState";
 		public const string reminderState = "ReminderState";
 		public const string conclusionState = "ConclusionState";
 		public const string truthState = "TruthState";
@@ -56,5 +59,16 @@ public class Consts
     public class FileName
     {
         public const string galleryBlankImage = "BlankImage";
+        public const string reminders = "Reminders";
+		public const string conclusions = "Conclusions";
+		public const string truths = "Truths";
     }
+
+	public class Constants
+	{
+		public const int REMINDER_NUM = 0;
+		public const int CONCLUSION_NUM = 0;
+		public const int TRUTH_NUM = 0;
+	}
 };
+
