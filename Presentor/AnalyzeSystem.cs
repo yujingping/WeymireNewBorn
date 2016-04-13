@@ -173,6 +173,7 @@ public class AnalyzeSystem : MonoBehaviour
 		}
 	}
 
+	//An animation is expected here to enhace gamer experience. Just for test currently.
 	private void AnalyzeContent ()
 	{
 		if (referenceLine1 == null || referenceLine2 == null)
@@ -193,7 +194,10 @@ public class AnalyzeSystem : MonoBehaviour
 		}
 		else
 		{
-			ClearSlots();
+			referenceLine1 = referenceLine2;
+			referenceLine2 = null;
+			slot1.text = slot2.text;
+			slot2.text = "";
 			PlayAnalyzeEffect(false);
 		}
 	}

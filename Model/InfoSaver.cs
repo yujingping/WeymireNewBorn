@@ -41,7 +41,7 @@ public class InfoSaver : MonoBehaviour
     }
 
     //!!!!!!NOTICE: PLEASE REMEMBER TO USE COROUTINE IN THE PRESENTOR SECTOR!!!!!!. 
-    public void TakeScreenShot ()
+    public static void TakeScreenShot ()
     {
         Texture2D screenShot = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
         screenShot.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
@@ -71,7 +71,7 @@ public class InfoSaver : MonoBehaviour
     public static void GallerySaveNewImage (byte[] bytes)
     {
         int index = PlayerPrefs.GetInt(Consts.VariableName.galleryImageNum) + 1;
-        PlayerPrefs.SetInt(Consts.VariableName.galleryImageNum, index);
+		DialogueLua.SetVariable(Consts.VariableName.galleryImageNum, index);
         int head = PlayerPrefs.GetInt(Consts.VariableName.galleryImageHead) + 1;
         DialogueLua.SetVariable(Consts.VariableName.galleryImageHead, head);
         string fileName = Application.persistentDataPath + "/Screenshot" + head + ".png";
