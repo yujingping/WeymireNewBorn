@@ -4,6 +4,9 @@ using PixelCrushers.DialogueSystem;
 
 public class Gallery : MonoBehaviour 
 {
+	//Arbitrarily set the static instance of this class to public, since the funcions implemented below often interact with the variables. 
+	public static Gallery instance;
+
 	[SerializeField]private UITexture mainTexure;
 	[SerializeField]private UIButton lastButton;
 	[SerializeField]private UIButton nextButton;
@@ -32,6 +35,15 @@ public class Gallery : MonoBehaviour
 
 	void Awake ()
 	{
+		if (instance == null)
+		{
+			instance = this;
+		}
+		else if (instance != this)
+		{
+			DestroyImmediate(gameObject);
+		}
+		DontDestroyOnLoad(gameObject);
 		if (DialogueLua.GetVariable(Consts.VariableName.galleryImageNum).AsInt == 0)
 			CurrentIndex = 0;
 		else
