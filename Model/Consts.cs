@@ -41,10 +41,12 @@ public class Consts
 		public const string pickUpItemState = "PickUpItemState";
 		public const string InteractableItemState = "InteractableItemState";
 		public const string realPictureState = "RealPictureState";
-		public const string contentReadState = "ContentReadState";
 		public const string reminderState = "ReminderState";
 		public const string conclusionState = "ConclusionState";
 		public const string truthState = "TruthState";
+		public const string reminderReadState = "ReminderReadState";
+		public const string conclusionReadState = "ConclusionReadState";
+		public const string truthReadState = "TruthReadState";
 		public const string backPackPermanentItemName = "BackPackPermanentItemName";
 		public const string backPackTemporaryItemName = "BackPackTemporaryItemName";
 		public const string playerPosX = "PlayerPosX";

@@ -29,67 +29,6 @@ public class InfoSaver : MonoBehaviour
         DialogueLua.SetVariable(Consts.VariableName.playerPosZ, playerPos.z);
     }
 
-    public static void SetBoolState (Consts.SaveType saveType, string variableName, bool state)
-    {
-        string finalName = "";
-        switch (saveType)
-        {
-            case Consts.SaveType.PickUpItem: 
-                finalName = Consts.VariableName.pickUpItemState + variableName;
-                break;
-            case Consts.SaveType.InteractableObject:
-                finalName = Consts.VariableName.InteractableItemState + variableName;
-                break;
-            case Consts.SaveType.RealPicture:
-                finalName = Consts.VariableName.realPictureState + variableName;
-                break;
-            case Consts.SaveType.Reminder:
-                finalName = Consts.VariableName.reminderState + variableName;
-                break;
-            case Consts.SaveType.Conclusion:
-                finalName = Consts.VariableName.conclusionState + variableName;
-                break;
-            case Consts.SaveType.Truth:
-                finalName = Consts.VariableName.truthState + variableName;
-                break;
-            default:
-                break;
-        }
-        DialogueLua.SetVariable(finalName, state ? 1 : 0);
-    }
-
-    public static bool GetBoolState (Consts.SaveType saveType, string variableName)
-    {
-        string finalName = "";
-        switch (saveType)
-        {
-            case Consts.SaveType.PickUpItem: 
-                finalName = Consts.VariableName.pickUpItemState + variableName;
-                break;
-            case Consts.SaveType.InteractableObject:
-                finalName = Consts.VariableName.InteractableItemState + variableName;
-                break;
-            case Consts.SaveType.RealPicture:
-                finalName = Consts.VariableName.realPictureState + variableName;
-                break;
-            case Consts.SaveType.Reminder:
-                finalName = Consts.VariableName.reminderState + variableName;
-                break;
-            case Consts.SaveType.Conclusion:
-                finalName = Consts.VariableName.conclusionState + variableName;
-                break;
-			case Consts.SaveType.Truth:
-				finalName = Consts.VariableName.truthState + variableName;
-				break;
-			case Consts.SaveType.Content:
-				finalName = Consts.VariableName.contentReadState = variableName;
-                break;
-            default:
-                break;
-        }
-		return DialogueLua.GetVariable(finalName).AsBool;
-    }
-
     public static void SaveLuaEnvironment ()
     {
         string luaEnvironment = PersistentDataManager.GetSaveData();
