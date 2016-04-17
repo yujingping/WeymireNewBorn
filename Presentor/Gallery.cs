@@ -62,7 +62,7 @@ public class Gallery : MonoBehaviour
 
 	public IEnumerator AddNewImageByScreenShot ()
 	{
-		yield return WaitForEndOfFrame();
+		yield return new WaitForEndOfFrame();
 		InfoSaver.TakeScreenShot();
 		imageNumber++;
 		if (CurrentIndex == 0)

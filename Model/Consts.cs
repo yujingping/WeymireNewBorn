@@ -72,5 +72,14 @@ public class Consts
 		public const int CONCLUSION_NUM = 0;
 		public const int TRUTH_NUM = 0;
 	}
+
+	public enum NotifyType
+	{
+		PickUpItem,
+		Interactable,
+		Reminder,
+		IncapableOfInteracting,
+		TooFar
+	}
 };
 

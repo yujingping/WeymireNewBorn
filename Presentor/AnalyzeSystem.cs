@@ -38,15 +38,11 @@ public class AnalyzeSystem : MonoBehaviour
 
 	public static GameObject contentPrefab;
 
-	[SerializeField]private UITable reminderTable;
-	[SerializeField]private UITable conclusionTable;
-	[SerializeField]private UITable truthTable;
-	[SerializeField]private UILabel slot1;
-	[SerializeField]private UILabel slot2;
-	[SerializeField]private UILabel contentArea;
-
-	[SerializeField]private ContentLine referenceLine1;
-	[SerializeField]private ContentLine referenceLine2;
+	[SerializeField]private UIGrid reminderTable;
+	[SerializeField]private UIGrid conclusionTable;
+	[SerializeField]private UIGrid truthTable;
+	[SerializeField]private List<ContentLine> contentSlots;
+	[SerializeField]private AnalyzeSystemGridController brainGridController;
 
 	[SerializeField]private const float UPDATE_TIME = 1f;
 
@@ -89,10 +85,9 @@ public class AnalyzeSystem : MonoBehaviour
 
 	private void InitializeVariables ()
 	{
-		referenceLine1 = null;
-		referenceLine2 = null;
-		slot1.text = slot2.text = "";
+		instance.contentSlots.Clear();
 		currentType = ContentType.Reminder;
+		variablesToCheck = new List<int>();
 	}
 
 	private void InitializeContents (ContentType type, string variableName, string targetFileName, int number)
@@ -118,7 +113,7 @@ public class AnalyzeSystem : MonoBehaviour
 		int higher = ((type == ContentType.Truth) ? -1 : int.Parse (lineComponents[4]));
 		Content newContentEntry = new Content(type, title, content, index, another, higher);
 		//To be CONTINUED : WRITE A NEW CONTENT CLASS AND IMPLEMENT ITS INITIALIZER, THEN ADD IT HERE!!!!
-		UITable targetTable = null;
+		UIGrid targetTable = null;
 		switch (type)
 		{
 			case ContentType.Reminder:
@@ -158,61 +153,17 @@ public class AnalyzeSystem : MonoBehaviour
 		}
 	}
 
-	public void AddSlot (ContentLine line)
-	{
-		if (referenceLine1 == null)
-		{
-			referenceLine1 = line;
-			slot1.text = "" + line.content.index;
-		}
-		else if (referenceLine2 == null)
-		{
-			referenceLine2 = line;
-			slot2.text = "" + line.content.index;
-			AnalyzeContent();
-		}
-	}
-
 	//An animation is expected here to enhace gamer experience. Just for test currently.
-	private void AnalyzeContent ()
+	public static void AnalyzeContent ()
 	{
-		if (referenceLine1 == null || referenceLine2 == null)
-			return;
-		if (referenceLine1.content.another == referenceLine2.content.index && referenceLine2.content.another == referenceLine1.content.index)
-		{
-			if (referenceLine1.content.type == ContentType.Reminder)
-			{
-				UnlockNewContent(ContentType.Conclusion, Consts.FileName.conclusions, referenceLine1.content.higher);
-				SwitchToContent(ContentType.Conclusion);
-			}
-			else
-			{
-				UnlockNewContent(ContentType.Truth, Consts.FileName.truths, referenceLine1.content.higher);
-				SwitchToContent(ContentType.Truth);
-			}
-			PlayAnalyzeEffect(true);
-		}
-		else
-		{
-			referenceLine1 = referenceLine2;
-			referenceLine2 = null;
-			slot1.text = slot2.text;
-			slot2.text = "";
-			PlayAnalyzeEffect(false);
-		}
-	}
-
-	private void ClearSlots ()
-	{
-		referenceLine1 = referenceLine2 = null;
-		slot1.text = slot2.text = "";
+		Debug.Log("I am analyzing! Please wait! Haha actually you will never get a result here now!");
 	}
 
 	public void SwitchToContent (ContentType type)
 	{
 		if (type == currentType)
 			return;
-		ClearSlots();
+		instance.contentSlots.Clear();
 	}
 
 	private void PlayAnalyzeEffect (bool isSuccess)
@@ -220,9 +171,50 @@ public class AnalyzeSystem : MonoBehaviour
 		
 	}
 
-	//An animation is expected here to enhance gamer experience. Just for test currently.
-	public void ReadContent (ContentLine line)
+	public static void SwitchTable (ContentType type)
 	{
-		contentArea.text = line.content.content;
+		instance.reminderTable.gameObject.SetActive(false);
+		instance.conclusionTable.gameObject.SetActive(false);
+		instance.truthTable.gameObject.SetActive(false);
+		switch (type)
+		{
+			case ContentType.Reminder:
+				instance.reminderTable.gameObject.SetActive(true);
+				break;
+			case ContentType.Conclusion:
+				instance.conclusionTable.gameObject.SetActive(true);
+				break;
+			case ContentType.Truth:
+				instance.truthTable.gameObject.SetActive(true);
+				break;
+			default:
+				break;
+		}
+		instance.contentSlots.Clear();
+	}
+
+	public static UIGrid GetCurrentGrid ()
+	{
+		switch (instance.currentType)
+		{
+			case ContentType.Reminder:
+				return instance.reminderTable;
+				break;
+			case ContentType.Conclusion:
+				return instance.conclusionTable;
+				break;
+			case ContentType.Truth:
+				return instance.truthTable;
+				break;
+			default:
+				break;
+		}
+		return null;
+	}
+
+	public static void FillSlots (List<ContentLine> contentList)
+	{
+		instance.contentSlots.Clear();
+		instance.contentSlots = contentList;
 	}
 }

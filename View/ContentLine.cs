@@ -2,12 +2,18 @@
 using System.Collections;
 using PixelCrushers.DialogueSystem;
 
-public class ContentLine : MonoBehaviour 
+public class ContentLine : UIDragDropItem 
 {
 	public AnalyzeSystem.Content content;
 
 	public UILabel titleDisplay;
 	private string finalTitle;
+
+	void Awake ()
+	{
+		base.Awake();
+		titleDisplay = GetComponent<UILabel>();
+	}
 
 	public void Initialize (AnalyzeSystem.Content con)
 	{
@@ -62,5 +68,10 @@ public class ContentLine : MonoBehaviour
 		}
 		finalTitle = "[[66FA33]" + content.index + "[-]]" + content.title;
 		titleDisplay.text = finalTitle;
+	}
+
+	void OnTooltip (bool show)
+	{
+		UITooltip.Show(content.content);
 	}
 }
