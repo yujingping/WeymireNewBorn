@@ -29,6 +29,13 @@ public class Consts
 		Tutoring,
 	}
 
+	public enum LensType
+	{
+		None,
+		NightVision,
+		Focus
+	}
+
 	public class QuestCondition
 	{
 		public const string Success = "success";
@@ -64,6 +71,7 @@ public class Consts
         public const string reminders = "Reminders";
 		public const string conclusions = "Conclusions";
 		public const string truths = "Truths";
+		public const string items = "Items";
     }
 
 	public class Constants
@@ -81,5 +89,14 @@ public class Consts
 		IncapableOfInteracting,
 		TooFar
 	}
+
+	public static string[] AnalyzeResults = new string[]
+	{
+			"Great!",
+			"I need more clues to analyze on this issue!",
+			"These clus are totally irrelevant!",
+			"Close. But one of them is contradictive!",
+			"Please Attach some relevant contents here!"
+	};
 };
 

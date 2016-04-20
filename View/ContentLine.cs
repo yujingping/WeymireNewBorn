@@ -12,6 +12,7 @@ public class ContentLine : UIDragDropItem
 	void Awake ()
 	{
 		base.Awake();
+		content.content = "gawetsdf!";
 		titleDisplay = GetComponent<UILabel>();
 	}
 
@@ -22,26 +23,28 @@ public class ContentLine : UIDragDropItem
 		content.content = con.content;
 		content.index = con.index;
 		content.higher = con.higher;
+		content.another2 = con.another2;
+		content.another = con.another;
 		finalTitle = "";
 		switch (con.type)
 		{
 			case AnalyzeSystem.ContentType.Reminder:
-				if (DialogueLua.GetVariable(Consts.VariableName.reminderReadState + content.index).AsBool)
-					finalTitle = "[[66FA33]" + content.index + "[-]][[FFFF66]NEW[-]]";
+				if (!DialogueLua.GetVariable(Consts.VariableName.reminderReadState + content.index).AsBool)
+					finalTitle = "[[FFFF66]NEW[-]]";
 				else
-					finalTitle = "[[66FA33]" + content.index + "[-]]";
+					finalTitle = "";
 				break;
 			case AnalyzeSystem.ContentType.Conclusion:
-				if (DialogueLua.GetVariable(Consts.VariableName.conclusionReadState + content.index).AsBool)
-					finalTitle = "[[66FA33]" + content.index + "[-]][[FFFF66]NEW[-]]";
+				if (!DialogueLua.GetVariable(Consts.VariableName.conclusionReadState + content.index).AsBool)
+					finalTitle = "[[FFFF66]NEW[-]]";
 				else
-					finalTitle = "[[66FA33]" + content.index + "[-]]";
+					finalTitle = "";
 				break;
 			case AnalyzeSystem.ContentType.Truth:
-				if (DialogueLua.GetVariable(Consts.VariableName.truthReadState + content.index).AsBool)
-					finalTitle = "[[66FA33]" + content.index + "[-]][[FFFF66]NEW[-]]";
+				if (!DialogueLua.GetVariable(Consts.VariableName.truthReadState + content.index).AsBool)
+					finalTitle = "[[FFFF66]NEW[-]]";
 				else
-					finalTitle = "[[66FA33]" + content.index + "[-]]";
+					finalTitle = "";
 				break;
 			default:
 				break;
@@ -66,12 +69,16 @@ public class ContentLine : UIDragDropItem
 			default:
 				break;
 		}
-		finalTitle = "[[66FA33]" + content.index + "[-]]" + content.title;
+		finalTitle = content.title;
 		titleDisplay.text = finalTitle;
 	}
 
-	void OnTooltip (bool show)
+	void OnTooltip(bool show)
 	{
-		UITooltip.Show(content.content);
+		ReadContent();
+		if (show)
+			UITooltip.Show(content.content);
+		else
+			UITooltip.Hide();
 	}
 }

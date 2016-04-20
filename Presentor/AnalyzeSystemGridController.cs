@@ -21,8 +21,6 @@ public class AnalyzeSystemGridController : UIDragDropContainer
 				reparentTarget = grid.transform;
 				return;
 			}
-			else
-				Debug.Log(grid.gameObject.name + " Has " + grid.GetChildList().Count + " children!");
 		}
 		reparentTarget = AnalyzeSystem.GetCurrentGrid().transform;
 	}
