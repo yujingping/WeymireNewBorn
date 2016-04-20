@@ -27,6 +27,7 @@ public class PhotoCamera : MonoBehaviour
 	private PhotoProcessor photoProcessor;
 
 	private bool screenNotionState;
+	private bool notifierState;
 
 	void Awake ()
 	{
@@ -38,7 +39,23 @@ public class PhotoCamera : MonoBehaviour
 	/// </summary>
 	private void SearchForObjects()
 	{
-		
+		List<GameObject> tempList = new List<GameObject>();
+		allPickUpItems.Clear();
+		allInteractableObjects.Clear();
+		tempList = new List<GameObject>(GameObject.FindGameObjectsWithTag(Tags.PickUpItem));
+		foreach (GameObject go in tempList)
+		{
+			if (!go.GetComponent<PickUpItem>())
+				continue;
+			allPickUpItems.Add(go.GetComponent<PickUpItem>());
+		}
+		tempList = new List<GameObject>(GameObject.FindGameObjectsWithTag(Tags.Interactable));
+		foreach (GameObject go in tempList)
+		{
+			if (!go.GetComponent<InteractableObject>())
+				continue;
+			allInteractableObjects.Add(go.GetComponent<PickUpItem>());
+		}
 	}
 
 	/// <summary>
@@ -47,13 +64,13 @@ public class PhotoCamera : MonoBehaviour
 	/// <param name="type">Type.</param>
 	public void SetLens(Consts.LensType type)
 	{
-		
+		LensType = type;
 	}
 
 	/// <summary>
 	/// Find the active objects in the scene and assign them to the list values in the script.
 	/// </summary>
-	private void UpdatePhotoObjects()
+	private void EvaluatePhotoObjects()
 	{
 		
 	}
@@ -71,7 +88,7 @@ public class PhotoCamera : MonoBehaviour
 	/// Sets the state of the screen notifiers.
 	/// </summary>
 	/// <param name="state">If set to <c>true</c> state.</param>
-	private void SetNotifierStae(bool state)
+	private void SetNotifierState(bool state)
 	{
 		
 	}

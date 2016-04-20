@@ -100,3 +100,10 @@ public class Consts
 	};
 };
 
+public class Tags
+{
+	public static string PickUpItem = "PickUpItem";
+	public static string Interactable = "Interactable";
+	public static string RealPicture = "RealPicture";
+	public static string Flare = "Flare";
+}
