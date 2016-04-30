@@ -26,4 +26,9 @@ public class InteractableObject : PhotoObject
 	{
 		
 	}
+
+	public override void NotifyObjectOnScreen (Vector2 screenPos)
+	{
+		
+	}
 }

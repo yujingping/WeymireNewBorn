@@ -22,15 +22,19 @@ public class UIController : MonoBehaviour
 	void Awake ()
 	{
 		mainCamera = Camera.main;
+		if (instance == null)
+		{
+			instance = this;
+		}
+		else if (instance != this)
+		{
+			DestroyImmediate(this.gameObject);
+		}
+		DontDestroyOnLoad(this);
 	}
 
 	//To be implemented after the UI Controls have been completely determined.
 	public static void SetUISituation (Consts.DisplaySetting setting)
-	{
-		
-	}
-
-	public static void NotifyOnScreen (Consts.NotifyType type, Vector3 worldPosition)
 	{
 		
 	}

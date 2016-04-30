@@ -72,6 +72,7 @@ public class Consts
 		public const string conclusions = "Conclusions";
 		public const string truths = "Truths";
 		public const string items = "Items";
+		public const string prefabs = "Prefabs";
     }
 
 	public class Constants
@@ -98,6 +99,11 @@ public class Consts
 			"Close. But one of them is contradictive!",
 			"Please Attach some relevant contents here!"
 	};
+
+	public class PrefabName
+	{
+		public const string EMPTY = "empty";
+	}
 };
 
 public class Tags

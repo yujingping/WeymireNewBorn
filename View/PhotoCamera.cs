@@ -29,6 +29,10 @@ public class PhotoCamera : MonoBehaviour
 	private bool screenNotionState;
 	private bool notifierState;
 
+	//Detection Parameter Variables go here. They should be set to [SerializedField] private XXX YYY;
+
+	//Detection Parameters
+
 	void Awake ()
 	{
 		photoProcessor = GetComponent<PhotoProcessor>();
@@ -42,19 +46,27 @@ public class PhotoCamera : MonoBehaviour
 		List<GameObject> tempList = new List<GameObject>();
 		allPickUpItems.Clear();
 		allInteractableObjects.Clear();
+		realPicture.Clear();
 		tempList = new List<GameObject>(GameObject.FindGameObjectsWithTag(Tags.PickUpItem));
 		foreach (GameObject go in tempList)
 		{
-			if (!go.GetComponent<PickUpItem>())
+			if (!go.GetComponent<PickUpItem>() || !go.activeInHierarchy)
 				continue;
 			allPickUpItems.Add(go.GetComponent<PickUpItem>());
 		}
 		tempList = new List<GameObject>(GameObject.FindGameObjectsWithTag(Tags.Interactable));
 		foreach (GameObject go in tempList)
 		{
-			if (!go.GetComponent<InteractableObject>())
+			if (!go.GetComponent<InteractableObject>() || !go.activeInHierarchy)
 				continue;
-			allInteractableObjects.Add(go.GetComponent<PickUpItem>());
+			allInteractableObjects.Add(go.GetComponent<InteractableObject>());
+		}
+		tempList = new List<GameObject>(GameObject.FindGameObjectsWithTag(Tags.RealPicture));
+		foreach (GameObject go in tempList)
+		{
+			if (!go.GetComponent<RealPicture>() || !go.activeInHierarchy)
+				continue;
+			realPicture.Add(go.GetComponent<RealPicture>());
 		}
 	}
 
@@ -110,5 +122,14 @@ public class PhotoCamera : MonoBehaviour
 	private IEnumerator PlaySwitchEffect()
 	{
 		yield return null;
+	}
+
+	/// <summary>
+	/// Avoid calling photoObject.NotifyObjectOnScreen() in this script. 
+	/// </summary>
+	/// <param name="photoObject">Photo object.</param>
+	private void NotifyObject (PhotoObject photoObject)
+	{
+		
 	}
 }
