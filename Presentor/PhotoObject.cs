@@ -19,8 +19,8 @@ public abstract class PhotoObject : MonoBehaviour
 	/// Notifies the object on screen based on the screen position transferred to the function. 
 	/// </summary>
 	/// <param name="screenPosition">Screen position.</param>
-	public virtual void NotifyObjectOnScreen (Vector2 screenPosition)
+	public virtual void NotifyObjectOnScreen (InventoryState state, Vector2 screenPosition, float maxDistance)
 	{
-
+		
 	}
 }

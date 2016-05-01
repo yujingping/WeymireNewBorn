@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class BackPack : MonoBehaviour 
 {
 	/// <summary>
-	/// Insert a list of items into the backPack.
+	/// Insert a list of items into the backPack. Invoked by PlayerInventory only.
 	/// </summary>
 	/// <param name="items">Items.</param>
 	public void InsertItemList(List<Item> items)
@@ -14,7 +14,7 @@ public class BackPack : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Insert a single item into the backPack.
+	/// Insert a single item into the backPack. Invoked by PlayerInventory only.
 	/// </summary>
 	/// <param name="item">Item.</param>
 	public void InsertItem(Item item)

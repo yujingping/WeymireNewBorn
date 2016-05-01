@@ -37,6 +37,8 @@ public class PlayerInventory : MonoBehaviour
 
 	private static float UPDATE_FREQ;
 
+	private List <Item> inventoryItems;
+
 	void Awake()
 	{
 		if (instance == null)
@@ -48,7 +50,7 @@ public class PlayerInventory : MonoBehaviour
 			DestroyImmediate(gameObject);
 		}
 		DontDestroyOnLoad(gameObject);
-
+		inventoryItems = new List <Item>();
 	}
 
 	void Start ()
@@ -70,9 +72,31 @@ public class PlayerInventory : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Determines whether a certain object is to be inserted into the playerInventory, or could certain object be interacted with the object equipped. Please note that LENS COULD NOT BE ADDED IN THIS FUNCTION!
+	/// </summary>
+	/// <param name="objects">Objects.</param>
 	public static void ProcessPhotoedObjects (List<PhotoObject> objects)
 	{
-		
+		foreach (PhotoObject po in objects)
+		{
+			if (po.GetComponent <PickUpItem>() != null)
+			{
+				
+			}
+			else if (po.GetComponent <InteractableObject>() != null)
+			{
+				
+			}
+			else if (po.GetComponent <RealPicture>() != null)
+			{
+				
+			}
+			else
+			{
+				
+			}
+		}
 	}
 
 	public static void EquipItem(Item item)
@@ -86,7 +110,7 @@ public class PlayerInventory : MonoBehaviour
 	/// <param name="items">Items.</param>
 	public static void AddNewItemList(List<Item> items)
 	{
-		
+		instance.backPack.InsertItemList(items);
 	}
 
 	/// <summary>
@@ -95,7 +119,7 @@ public class PlayerInventory : MonoBehaviour
 	/// <param name="item">Item.</param>
 	public static void AddNewItem(Item item)
 	{
-		
+		instance.backPack.InsertItem(item);
 	}
 
 	/// <summary>
@@ -122,5 +146,22 @@ public class PlayerInventory : MonoBehaviour
 	public static void EquipLens(LensItem lens)
 	{
 		
+	}
+
+	/// <summary>
+	/// Reads the concise item information from the item file. The index is the line number of the item. 
+	/// </summary>
+	/// <returns>The item from file.</returns>
+	/// <param name="index">Index.</param>
+	private static Item ReadItemFromFile (int index)
+	{
+		string itemString = InfoSaver.GetStringFromResource(Consts.FileName.items, index);
+		string[] strings = itemString.Split('#');
+		int idx = int.Parse (strings[0]);
+		string name = strings[1];
+		string modelName = strings[2];
+		string introduction = strings[3];
+		bool p = int.Parse(strings[4]) == 1;
+		return new Item(idx, name, modelName, introduction, p);
 	}
 }

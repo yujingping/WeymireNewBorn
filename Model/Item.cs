@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class Item : MonoBehaviour 
+public class Item
 {
 	public int Index
 	{
@@ -35,18 +35,41 @@ public abstract class Item : MonoBehaviour
 		}
 	}
 
+	public bool IsPermanent
+	{
+		get
+		{
+			return isPermanent;
+		}
+	}
+
 	private int index;
 	private string name;
 	private string modelName;
 	private string introduction;
+	private bool isPermanent;
 
 	public virtual void EquipItem()
 	{
 		
 	}
 
-	public virtual void UseItem()
+	protected virtual void UseItem()
 	{
 		
+	}
+
+	public Item ()
+	{
+		
+	}
+
+	public Item (int index, string n, string m, string i, bool isP)
+	{
+		index = index;
+		name = n;
+		modelName = m;
+		introduction = i;
+		isPermanent = isP;
 	}
 }
