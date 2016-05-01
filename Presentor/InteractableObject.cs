@@ -27,8 +27,13 @@ public class InteractableObject : PhotoObject
 		
 	}
 
-	public override void NotifyObjectOnScreen (InventoryState state, Vector2 screenPos, float maxDistance)
+	public override bool NotifyObjectOnScreen (InventoryState state, Vector2 screenPos, float maxDistance)
 	{
-		
+		return true;
+	}
+
+	public override bool DetermineAvailability (InventoryState state, Vector2 screenPos, float maxDistance)
+	{
+		return true;
 	}
 }

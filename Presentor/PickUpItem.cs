@@ -24,9 +24,15 @@ public class PickUpItem : PhotoObject
 	/// </summary>
 	/// <param name="screenPosition">Screen position.</param>
 	/// <param name="state">State.</param>
-	public virtual void NotifyObjectOnScreen (InventoryState state, Vector2 screenPosition, float maxDistance)
+	public override bool NotifyObjectOnScreen (InventoryState state, Vector2 screenPosition, float maxDistance)
 	{
-
+		return true;
 	}
 
+
+	public override bool DetermineAvailability (InventoryState state, Vector2 screenPosition, float maxDistance)
+	{
+		return true;
+	}
 }
+

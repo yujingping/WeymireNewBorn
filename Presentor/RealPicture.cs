@@ -69,7 +69,7 @@ public class RealPicture : PhotoObject
 	/// Determine whether this real picuture could be taken legally.
 	/// </summary>
 	/// <returns><c>true</c>, if real picture was detected, <c>false</c> otherwise.</returns>
-	public bool DetectRealPicture ()
+	public override bool DetermineAvailability (InventoryState state, Vector2 screenPosition, float maxDistance)
 	{
 		if (!DetectionState)
 			return false;
@@ -123,5 +123,10 @@ public class RealPicture : PhotoObject
 		//To be Implemented : 
 		//Alert a message telling the player that "ObjectName" photo has been taken. 
 		//Complete an assignment.
+	}
+
+	public override bool NotifyObjectOnScreen (InventoryState state, Vector2 screePos, float maxDistance)
+	{
+		return true;
 	}
 }

@@ -37,6 +37,8 @@ public class PlayerInventory : MonoBehaviour
 
 	private static float UPDATE_FREQ;
 
+	private InventoryState inventoryState;
+
 	private List <Item> inventoryItems;
 
 	void Awake()
@@ -73,7 +75,8 @@ public class PlayerInventory : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Determines whether a certain object is to be inserted into the playerInventory, or could certain object be interacted with the object equipped. Please note that LENS COULD NOT BE ADDED IN THIS FUNCTION!
+	/// Determines whether a certain object is to be inserted into the playerInventory, or could certain object be interacted with the object equipped. 
+	/// Please note that LENS COULD NOT BE ADDED IN THIS FUNCTION!
 	/// </summary>
 	/// <param name="objects">Objects.</param>
 	public static void ProcessPhotoedObjects (List<PhotoObject> objects)
@@ -163,5 +166,10 @@ public class PlayerInventory : MonoBehaviour
 		string introduction = strings[3];
 		bool p = int.Parse(strings[4]) == 1;
 		return new Item(idx, name, modelName, introduction, p);
+	}
+
+	public static InventoryState GetInventoryState ()
+	{
+		return instance.inventoryState;
 	}
 }

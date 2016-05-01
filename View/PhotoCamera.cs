@@ -22,12 +22,15 @@ public class PhotoCamera : MonoBehaviour
 
 	private List<PickUpItem> pickUpItems, allPickUpItems;
 	private List<InteractableObject> interactableObjects, allInteractableObjects;
-	private List<RealPicture> realPicture;
+	private List<RealPicture> allRealPictures;
+	private RealPicture realPicture;
 	private Consts.LensType lensType;
 	private PhotoProcessor photoProcessor;
 
 	private bool screenNotionState;
 	private bool notifierState;
+
+	private static float normalMaxDistance = 10f;
 
 	//Detection Parameter Variables go here. They should be set to [SerializedField] private XXX YYY;
 
@@ -38,6 +41,17 @@ public class PhotoCamera : MonoBehaviour
 		photoProcessor = GetComponent<PhotoProcessor>();
 	}
 
+	void Update ()
+	{
+		//if the player is currently in move mode then the camera is swithced off.
+		if (lensType == Consts.LensType.None)
+			return;
+		else
+		{
+			
+		}
+	}
+
 	/// <summary>
 	/// Find all the sensitive and interactable Objects in the camera view and assgin them to the list values in the script.
 	/// </summary>
@@ -46,7 +60,7 @@ public class PhotoCamera : MonoBehaviour
 		List<GameObject> tempList = new List<GameObject>();
 		allPickUpItems.Clear();
 		allInteractableObjects.Clear();
-		realPicture.Clear();
+		allRealPictures.Clear();
 		tempList = new List<GameObject>(GameObject.FindGameObjectsWithTag(Tags.PickUpItem));
 		foreach (GameObject go in tempList)
 		{
@@ -66,7 +80,7 @@ public class PhotoCamera : MonoBehaviour
 		{
 			if (!go.GetComponent<RealPicture>() || !go.activeInHierarchy)
 				continue;
-			realPicture.Add(go.GetComponent<RealPicture>());
+			allRealPictures.Add(go.GetComponent<RealPicture>());
 		}
 	}
 
@@ -80,11 +94,62 @@ public class PhotoCamera : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Find the active objects in the scene and assign them to the list values in the script.
+	/// Update the lists and determine which object is proved to take.
 	/// </summary>
 	private void EvaluatePhotoObjects()
 	{
-		
+		InventoryState inventoryState = PlayerInventory.GetInventoryState();
+		foreach (PickUpItem pui in allPickUpItems)
+		{
+			Vector2 screenPosition = Camera.main.WorldToScreenPoint(pui.transform.position);
+			if (pui.NotifyObjectOnScreen(inventoryState, screenPosition, normalMaxDistance))
+			{
+				if (pickUpItems.Contains(pui))
+				{
+					continue;
+				}
+				if (pui.DetermineAvailability(inventoryState, screenPosition, normalMaxDistance))
+				pickUpItems.Add(pui);
+			}
+			else if (pickUpItems.Contains (pui))
+			{
+				DeleteNotifyObejct(pui);
+				pickUpItems.Remove (pui);
+			}
+		}
+		foreach (InteractableObject io in allInteractableObjects)
+		{
+			Vector2 screenPosition = Camera.main.WorldToScreenPoint(io.transform.position);
+			if (io.NotifyObjectOnScreen(inventoryState, screenPosition, normalMaxDistance))
+			{
+				if (interactableObjects.Contains(io))
+				{
+					continue;
+				}
+				if (io.DetermineAvailability(inventoryState, screenPosition, normalMaxDistance))
+					interactableObjects.Add(io);
+			}
+			else if (interactableObjects.Contains(io))
+			{
+				DeleteNotifyObejct(io);
+				interactableObjects.Remove(io);
+			}
+		}
+		bool isRealPictureFound = false;
+		foreach (RealPicture rp in allRealPictures)
+		{
+			if (rp.DetermineAvailability(inventoryState, new Vector2(0f, 0f), 0f))
+			{
+				isRealPictureFound = true;
+				realPicture = rp;
+				realPicture.NotifyObjectOnScreen(inventoryState, new Vector2(0f, 0f), 0f);
+			}
+		}
+		if (!isRealPictureFound)
+		{
+			DeleteNotifyObejct(realPicture);
+			realPicture = null;
+		}
 	}
 
 	/// <summary>
@@ -129,6 +194,11 @@ public class PhotoCamera : MonoBehaviour
 	/// </summary>
 	/// <param name="photoObject">Photo object.</param>
 	private void NotifyObject (PhotoObject photoObject)
+	{
+		
+	}
+
+	private void DeleteNotifyObejct (PhotoObject photoObject)
 	{
 		
 	}
