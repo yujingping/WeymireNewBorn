@@ -104,6 +104,9 @@ public class InfoSaver : MonoBehaviour
 			return texts;
         }
         string[] lines = texts.Split('\n');
-        return lines[lineNum];
+		if (lineNum != -1)
+			return lines[lineNum];
+		else
+			return texts;
     }
 }

@@ -64,9 +64,9 @@ public class Item
 		
 	}
 
-	public Item (int index, string n, string m, string i, bool isP)
+	public Item (int idx, string n, string m, string i, bool isP)
 	{
-		index = index;
+		index = idx;
 		name = n;
 		modelName = m;
 		introduction = i;

@@ -17,6 +17,10 @@ public class PlayerInventory : MonoBehaviour
 		{
 			return equippedLens;
 		}
+		private set
+		{
+			inventoryState.lensItem = value;
+		}
 	}
 
 	public Item EquippedItem
@@ -25,12 +29,18 @@ public class PlayerInventory : MonoBehaviour
 		{
 			return equippedItem;
 		}
+		private set
+		{
+			inventoryState.item = value;
+		}
 	}
 
 	private LensItem equippedLens;
 	private Item equippedItem;
 
+	[SerializeField]
 	private BackPack backPack;
+	[SerializeField]
 	private LensPack lensPack;
 
 	private static PlayerInventory instance;
@@ -39,7 +49,7 @@ public class PlayerInventory : MonoBehaviour
 
 	private InventoryState inventoryState;
 
-	private List <Item> inventoryItems;
+	private List <Item> inventoryItems = new List <Item> ();
 
 	void Awake()
 	{
@@ -58,6 +68,10 @@ public class PlayerInventory : MonoBehaviour
 	void Start ()
 	{
 		//Start the corresponding coroutines here.
+		//Item item1 = ReadItemFromFile (0);
+		//Item item2 = ReadItemFromFile (0);
+		//inventoryItems.Add(item1);
+		//inventoryItems.Add(item2);
 	}
 
 	private static void LoadItems()
@@ -74,34 +88,6 @@ public class PlayerInventory : MonoBehaviour
 		}
 	}
 
-	/// <summary>
-	/// Determines whether a certain object is to be inserted into the playerInventory, or could certain object be interacted with the object equipped. 
-	/// Please note that LENS COULD NOT BE ADDED IN THIS FUNCTION!
-	/// </summary>
-	/// <param name="objects">Objects.</param>
-	public static void ProcessPhotoedObjects (List<PhotoObject> objects)
-	{
-		foreach (PhotoObject po in objects)
-		{
-			if (po.GetComponent <PickUpItem>() != null)
-			{
-				
-			}
-			else if (po.GetComponent <InteractableObject>() != null)
-			{
-				
-			}
-			else if (po.GetComponent <RealPicture>() != null)
-			{
-				
-			}
-			else
-			{
-				
-			}
-		}
-	}
-
 	public static void EquipItem(Item item)
 	{
 		
@@ -113,7 +99,9 @@ public class PlayerInventory : MonoBehaviour
 	/// <param name="items">Items.</param>
 	public static void AddNewItemList(List<Item> items)
 	{
-		instance.backPack.InsertItemList(items);
+		//instance.backPack.InsertItemList(items);
+		foreach (Item item in items)
+			AddNewItem(item);
 	}
 
 	/// <summary>
@@ -122,7 +110,10 @@ public class PlayerInventory : MonoBehaviour
 	/// <param name="item">Item.</param>
 	public static void AddNewItem(Item item)
 	{
-		instance.backPack.InsertItem(item);
+		//instance.backPack.InsertItem(item);
+		instance.inventoryItems.Add (item);
+		DialogueLua.SetVariable(Consts.VariableName.backPackPermanentItemName + item.Index, 1);
+		instance.backPack.UpdateBackPackContent();
 	}
 
 	/// <summary>
@@ -139,7 +130,13 @@ public class PlayerInventory : MonoBehaviour
 	/// </summary>
 	public static void UseItem()
 	{
-		
+		if (instance.equippedItem == null)
+			return;
+		if (instance.equippedItem.IsPermanent)
+		{
+			instance.inventoryItems.Remove(instance.equippedItem);
+			instance.equippedItem = instance.inventoryState.item = null;
+		}
 	}
 
 	/// <summary>
@@ -171,5 +168,16 @@ public class PlayerInventory : MonoBehaviour
 	public static InventoryState GetInventoryState ()
 	{
 		return instance.inventoryState;
+	}
+
+	public static List<Item> GetItemList ()
+	{
+		return instance.inventoryItems;
+	}
+
+	public void TestAddItem ()
+	{
+		Item item = ReadItemFromFile(0);
+		AddNewItem(item);
 	}
 }
