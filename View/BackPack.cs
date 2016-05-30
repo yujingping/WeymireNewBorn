@@ -11,10 +11,17 @@ public class BackPack : UIGrid
 	/// The prefab of the itemView. 
 	/// </summary>
 	public GameObject prefab;
+
 	/// <summary>
 	/// The GameObejcts of the items. Please note that the "Item" Attribute of the ItemView is the reference from PlayerInventory.
 	/// </summary>
 	private List <ItemView> items = new List <ItemView> ();
+
+	/// <summary>
+	/// The equipped Item. This is a reference-only;
+	/// </summary>
+	private ItemView equippedItem;
+
 	/// <summary>
 	/// Insert a list of items into the backPack. Invoked by PlayerInventory only.
 	/// </summary>
