@@ -61,7 +61,9 @@ public class Item
 
 	public Item ()
 	{
-		
+		modelName = "Sphere";
+		name = "Mother Fucker Test";
+		introduction = "Well this is only a test script please don't expect that much hhhhhhhhhhhhh!!!";
 	}
 
 	public Item (int idx, string n, string m, string i, bool isP)

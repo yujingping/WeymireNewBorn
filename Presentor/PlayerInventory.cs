@@ -72,6 +72,7 @@ public class PlayerInventory : MonoBehaviour
 		//Item item2 = ReadItemFromFile (0);
 		//inventoryItems.Add(item1);
 		//inventoryItems.Add(item2);
+		TestAddItem ();
 	}
 
 	private static void LoadItems()
@@ -112,7 +113,7 @@ public class PlayerInventory : MonoBehaviour
 	{
 		//instance.backPack.InsertItem(item);
 		instance.inventoryItems.Add (item);
-		DialogueLua.SetVariable(Consts.VariableName.backPackPermanentItemName + item.Index, 1);
+		//DialogueLua.SetVariable(Consts.VariableName.backPackPermanentItemName + item.Index, 1);
 		instance.backPack.UpdateBackPackContent();
 	}
 
