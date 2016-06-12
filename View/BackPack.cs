@@ -213,21 +213,20 @@ public class BackPack : MonoBehaviour
 	private IEnumerator LoadModel (string modelName)
 	{
 		Vector3 pos = objectShower.transform.position;
-		DestroyImmediate(objectShower);
 		#if UNITY_EDITOR
-		Object loadedResource = Resources.Load(modelName, typeof(GameObject));
-		objectShower = Instantiate(loadedResource as GameObject, pos, Quaternion.identity) as GameObject;
+		//Object loadedResource = Resources.Load(modelName, typeof(GameObject));
+		//objectShower = Instantiate(loadedResource as GameObject, pos, Quaternion.identity) as GameObject;
+		GameObject loadedPrefab = Resources.Load(modelName, typeof(GameObject)) as GameObject;
+		objectShower.GetComponent<MeshFilter>().mesh = loadedPrefab.GetComponent<MeshFilter> ().sharedMesh;
+		objectShower.GetComponent<MeshRenderer> ().material = loadedPrefab.GetComponent<MeshRenderer> ().sharedMaterial;
 		yield return null;
 		#else
 		ResourceRequest requestState = Resources.LoadAsync(modelName);
 		yield return requestState;
-		objectShower = Instantiate (requestState.asset as GameObject, pos, Quaternion.identity) as GameObject;
+		GameObject loadedPrefab = requestState.asset as GameObject;
+		objectShower.GetComponent<MeshFilter>().mesh = loadedPrefab.GetComponent<MeshFilter> ().sharedMesh;
+		objectShower.GetComponent<MeshRenderer> ().material = loadedPrefab.GetComponent<MeshRenderer> ().sharedMaterial;
 		#endif
-		if (!objectShower.GetComponent<BoxCollider>())
-			objectShower.AddComponent<BoxCollider>();
-		if (!objectShower.GetComponent<TestNGUISpinWithMouse>())
-			objectShower.AddComponent<TestNGUISpinWithMouse>();
-		objectShower.transform.parent = transform;
 	}
 
 	/// <summary>
