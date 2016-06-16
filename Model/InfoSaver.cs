@@ -96,6 +96,12 @@ public class InfoSaver : MonoBehaviour
         yield return instance.StartCoroutine(GetGalleryTextureByID(targetTexture, index));
     }
 
+	/// <summary>
+	/// Gets the string from resource. Indicate a line number and it will return the corresponding line. Otherwise all the mats instead. 
+	/// </summary>
+	/// <returns>The string from resource.</returns>
+	/// <param name="fileName">File name.</param>
+	/// <param name="lineNum">Line number.</param>
     public static string GetStringFromResource (string fileName, int lineNum = -1)
     {
         string texts = Resources.Load(fileName).ToString();
@@ -109,4 +115,18 @@ public class InfoSaver : MonoBehaviour
 		else
 			return texts;
     }
+
+	/// <summary>
+	/// Get the splitted strings based on the splitChar. A line Number is required in this case. 
+	/// </summary>
+	/// <returns>The strings from resouce.</returns>
+	/// <param name="fileName">File name.</param>
+	/// <param name="splitChar">Split char.</param>
+	/// <param name="lineNum">Line number.</param>
+	public static string[] GetStringsFromResouce (string fileName, char splitChar, int lineNum)
+	{
+		string texts = Resources.Load(fileName).ToString();
+		string[] lines = texts.Split(splitChar);
+		return lines;
+	}
 }
