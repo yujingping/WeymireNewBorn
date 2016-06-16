@@ -23,12 +23,18 @@ public class TutorialManager : MonoBehaviour
 	{
 		
 	}
-
-	/// <summary>
-	/// Load the tutor from infoSaver.
-	/// </summary>
-	private void LoadTutorFromFile ()
-	{
 		
+	/// <summary>
+	/// Loads the tutorWindow resource.
+	/// </summary>
+	/// <returns>The resource.</returns>
+	/// <param name="index">Index.</param>
+	private IEnumerator LoadResource (int index)
+	{
+		/// Please note that this time I don't differentiate editor and iOS release. 
+		/// Since alternating to loading directly is pretty fucky ... 
+		ResourceRequest state = Resources.LoadAsync(Consts.VariableName.tutorialName + index, typeof (GameObject));
+		yield return state;
+		GameObject tutorWindow = state.asset as GameObject;
 	}
 }

@@ -63,6 +63,7 @@ public class Consts
         public const string galleryImageIndex = "GalleryImageIndex";
         public const string galleryImageNum = "GalleryImageNum";
         public const string galleryImageHead = "GalleryImageHead";//This value could only be added by 1. It could not reduce or add anything else.
+		public const string tutorialName = "Tutorial";
 	}
 
     public class FileName
